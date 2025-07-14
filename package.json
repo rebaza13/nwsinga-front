@@ -10,6 +10,9 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.5",
     "pinia": "^3.0.3",
