@@ -5,13 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run build-only",
+    "build": "npm run type-check && npm run build-only",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build"
-  },
-  "engines": {
-    "node": "18.x"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.5",
