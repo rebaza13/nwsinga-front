@@ -284,6 +284,7 @@ onMounted(() => {
         </div>
       </header>
       <!-- Filters Section -->
+      <!--
       <section class="filters">
         <div class="container">
           <div class="filters__content">
@@ -326,6 +327,7 @@ onMounted(() => {
           </div>
         </div>
       </section>
+      -->
       <!-- Houses Section -->
       <section class="houses">
         <div class="container">

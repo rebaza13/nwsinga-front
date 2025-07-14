@@ -52,7 +52,10 @@
               loading="lazy"
             />
             <div v-if="images.length > 1" class="modal-thumbnails">
-              <button class="thumb-nav" @click="prevImage" :disabled="mainImageIndex === 0">&#8592;</button>
+              <button class="thumb-nav" @click="prevImage" :disabled="mainImageIndex === 0">
+                <span v-if="!isRtl">&#x2039;</span><!-- ‹ -->
+                <span v-else>&#x203A;</span><!-- › -->
+              </button>
               <img
                 v-for="(img, idx) in images"
                 :key="img + idx"
@@ -62,7 +65,10 @@
                 :class="{ active: idx === mainImageIndex }"
                 @click="setMainImage(idx)"
               />
-              <button class="thumb-nav" @click="nextImage" :disabled="mainImageIndex === images.length - 1">&#8594;</button>
+              <button class="thumb-nav" @click="nextImage" :disabled="mainImageIndex === images.length - 1">
+                <span v-if="!isRtl">&#x203A;</span><!-- › -->
+                <span v-else>&#x2039;</span><!-- ‹ -->
+              </button>
             </div>
           </div>
         </div>
