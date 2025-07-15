@@ -54,7 +54,7 @@
             <div v-if="images.length > 1" class="modal-thumbnails">
               <button class="thumb-nav" @click="prevImage" :disabled="mainImageIndex === 0">
                 <span v-if="!isRtl">&#x2039;</span><!-- ‹ -->
-                <span v-else>&#x203A;</span><!-- › -->
+                <span v-else>&#x2039;</span><!-- ‹ -->
               </button>
               <img
                 v-for="(img, idx) in images"
@@ -67,7 +67,7 @@
               />
               <button class="thumb-nav" @click="nextImage" :disabled="mainImageIndex === images.length - 1">
                 <span v-if="!isRtl">&#x203A;</span><!-- › -->
-                <span v-else>&#x2039;</span><!-- ‹ -->
+                <span v-else>&#x203A;</span><!-- › -->
               </button>
             </div>
           </div>

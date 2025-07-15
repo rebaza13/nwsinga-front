@@ -1,5 +1,5 @@
 <template>
-  <div class="house-card" @click="$emit('click', index)">
+  <div class="house-card" @click="$emit('click', index)" v-intersect="onIntersect" :class="{ 'animated': animated }">
     <!-- Card Image Section -->
     <div class="house-card__image">
       <img 
@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import type { HouseCardProps } from '../types/house'
 import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 /**
  * House Card Component
@@ -77,6 +78,14 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
+
+// Animation logic
+const animated = ref(false)
+function onIntersect(entries: IntersectionObserverEntry[]) {
+  if (entries[0].isIntersecting) {
+    animated.value = true
+  }
+}
 </script>
 
 <style scoped>
@@ -95,12 +104,29 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   position: relative;
+  opacity: 0;
+  transform: translateY(40px);
 }
 
 .house-card:hover {
   border-color: var(--primary-text);
   transform: translateY(-8px);
   box-shadow: 0 12px 40px var(--shadow-medium);
+}
+
+.house-card.animated {
+  animation: fadeSlideUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /**

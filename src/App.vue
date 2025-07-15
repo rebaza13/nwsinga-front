@@ -10,6 +10,9 @@ import HouseModal from './components/HouseModal.vue'
 import SkeletonCard from './components/SkeletonCard.vue'
 import FullscreenLoader from './components/FullscreenLoader.vue'
 import type { Ref } from 'vue'
+import { Icon } from '@iconify/vue';
+
+const heroImg = new URL('./assets/img1.jpg', import.meta.url).href
 
 const { t, locale } = useI18n()
 const languages = [
@@ -200,19 +203,23 @@ function simulateProgress() {
 async function initializePage() {
   // Start progress simulation
   const progressInterval = simulateProgress()
-  
+
+  const start = Date.now()
   // Fetch houses
   await fetchHouses()
-  
+
   // Complete progress
   progress.value = 100
-  
-  // Wait a bit for smooth transition
-  await new Promise(resolve => setTimeout(resolve, 500))
-  
+
+  // Wait for at least 2 seconds total
+  const elapsed = Date.now() - start
+  if (elapsed < 2000) {
+    await new Promise(resolve => setTimeout(resolve, 2000 - elapsed))
+  }
+
   // Hide initial loader
   initialLoading.value = false
-  
+
   clearInterval(progressInterval)
 }
 
@@ -250,6 +257,22 @@ onMounted(() => {
   // Initial paginated fetch
   fetchHouses(0, pageSize - 1)
 })
+
+const housesSectionRef = ref<HTMLElement | null>(null)
+
+function scrollToHousesAndOpenFirst() {
+  nextTick(() => {
+    if (housesSectionRef.value) {
+      housesSectionRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    // Open the modal for the first house after a short delay for smoothness
+    setTimeout(() => {
+      if (filteredHouses.value.length > 0) {
+        openModal(0)
+      }
+    }, 400)
+  })
+}
 </script>
 
 <template>
@@ -273,16 +296,35 @@ onMounted(() => {
                 class="logo-image"
               />
             </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-              <ThemeToggle />
-              <button class="lang-toggle" @click="toggleLang">
-                <span class="lang-toggle__icon">🌐</span>
-                <span class="lang-toggle__label">{{ currentLangLabel() }}</span>
+            <div class="header-actions">
+              <button class="icon-btn lang-btn" @click="toggleLang" :aria-label="t('header.lang')">
+                <Icon icon="mdi:earth" style="font-size: 1.5rem;" />
+              </button>
+              <button class="icon-btn theme-btn" @click="themeStore.toggleTheme" :aria-label="t('header.themeToggle')">
+                <Icon v-if="themeStore.isDark" icon="mdi:weather-night" style="font-size: 1.5rem;" />
+                <Icon v-else icon="mdi:white-balance-sunny" style="font-size: 1.5rem;" />
               </button>
             </div>
           </div>
         </div>
       </header>
+      <!-- Hero Section with Animation -->
+      <transition name="fade-slide-up">
+        <section class="hero-section" v-if="!initialLoading">
+          <div class="container hero-container">
+            <div class="hero-content" :class="{ 'rtl-hero': locale === 'ckb' }">
+              <div class="hero-text">
+                <h1 class="hero-title">{{ t('hero.title') }}</h1>
+                <p class="hero-subtitle">{{ t('hero.subtitle') }}</p>
+                <button class="hero-btn" @click="scrollToHousesAndOpenFirst">{{ t('hero.cta') }}</button>
+              </div>
+              <div class="hero-image">
+                <img :src="heroImg" alt="Hero" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </transition>
       <!-- Filters Section -->
       <!--
       <section class="filters">
@@ -329,7 +371,7 @@ onMounted(() => {
       </section>
       -->
       <!-- Houses Section -->
-      <section class="houses">
+      <section class="houses" ref="housesSectionRef">
         <div class="container">
           <div class="houses__header">
             <h3 class="houses__title">{{ t('houses.featured') }}</h3>
@@ -412,7 +454,8 @@ onMounted(() => {
 .app-header {
   background-color: var(--header-bg);
   border-bottom: 1px solid var(--border-color);
-  padding: 0.25rem 0;
+  padding: 0.5rem 0 0.5rem 0;
+  min-height: 56px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -431,7 +474,7 @@ onMounted(() => {
 }
 
 .logo-image {
-  height: 74px;
+  height: 54px;
   width: auto;
   border-radius: 10px;
   transition: transform 0.3s ease;
@@ -685,37 +728,140 @@ onMounted(() => {
   }
 }
 
-.lang-toggle {
+.header-actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background: var(--secondary-bg);
-  color: var(--primary-text);
-  border: 2px solid var(--border-color);
-  border-radius: 50px;
-  padding: 0.5rem 1.2rem;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: var(--transition);
-  outline: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  gap: 0.75rem;
 }
-.lang-toggle:hover {
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--secondary-bg);
+  border: 1.5px solid var(--border-color);
+  color: var(--primary-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  outline: none;
+}
+.icon-btn:hover, .icon-btn:focus {
   background: var(--hover-bg);
   border-color: var(--primary-text);
+  color: var(--accent-bg);
 }
-.lang-toggle__icon {
-  font-size: 1.2rem;
+.lang-btn {
+  /* Additional styles if needed */
 }
-.lang-toggle__label {
-  font-size: 1rem;
-  font-weight: 700;
+.theme-btn {
+  /* Additional styles if needed */
 }
 
 .load-more-container {
   display: flex;
   justify-content: center;
   margin: 2rem 0 1rem 0;
+}
+
+.hero-section {
+  background: linear-gradient(120deg, var(--primary-bg) 60%, var(--secondary-bg) 100%);
+  padding: 3rem 0 2rem 0;
+  margin-top: 2rem;
+}
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+.hero-text {
+  flex: 1 1 350px;
+  max-width: 500px;
+}
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary-text);
+  margin-bottom: 1.2rem;
+  line-height: 1.1;
+}
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: var(--muted-text);
+  margin-bottom: 2rem;
+}
+.hero-btn {
+  background: var(--accent-bg);
+  color: var(--secondary-text);
+  border: none;
+  border-radius: 30px;
+  padding: 0.9rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.12);
+}
+.hero-btn:hover {
+  background: var(--accent-hover);
+  color: var(--primary-bg);
+  transform: translateY(-2px) scale(1.03);
+}
+.hero-image {
+  flex: 1 1 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-image img {
+  max-width: 420px;
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  object-fit: cover;
+  display: block;
+  background: #eee;
+}
+.rtl-hero {
+  flex-direction: row-reverse;
+}
+@media (max-width: 900px) {
+  .hero-content {
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+  }
+  .hero-image img {
+    max-width: 100%;
+    height: auto;
+  }
+  .hero-text {
+    max-width: 100%;
+  }
+}
+
+/* Animations */
+.fade-slide-up-enter-active {
+  animation: fadeSlideUp 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

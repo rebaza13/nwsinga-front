@@ -54,6 +54,11 @@ const messages = {
       floor: 'Floor',
       price: 'Price:',
     },
+    hero: {
+      title: 'Find Your Dream Home',
+      subtitle: 'Discover beautiful houses, apartments, and more. The best place to start your new journey.',
+      cta: 'View Houses',
+    },
   },
   ckb: {
     header: {
@@ -62,7 +67,7 @@ const messages = {
       lang: 'زمان',
     },
     houses: {
-      featured: 'خانووە تایبەتەکان',
+      featured: 'خانووەکان',
       area: 'ڕووبەر',
       direction: 'ئاڕاستە',
       floors: 'ژوورەکان',
@@ -97,7 +102,7 @@ const messages = {
     },
     loader: {
       title: 'نووسینگەی ئاوات',
-      subtitle: 'بۆ کڕین و فرۆشتنی خان و زەوی',
+      subtitle: 'بۆ کڕین و فرۆشتنی خانوو زەوی',
       welcome: 'بەخێربێیت بۆ جایداد',
       loading: 'خانووی جوان بۆ تۆ بار دەکرێت...'
     },
@@ -107,6 +112,11 @@ const messages = {
       previous: 'پێشتر',
       floor: 'ژوور',
       price: 'نرخ:',
+    },
+    hero: {
+      title: 'خانووی خەونەکانت بدۆزەوە',
+      subtitle: 'باشترین شوێن هەڵبژێرە بۆ دەستپێکردنی ژیانێکی نوێ',
+      cta: 'بینینی خانووەکان',
     },
   }
 };

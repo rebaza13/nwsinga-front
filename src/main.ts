@@ -11,6 +11,16 @@ const pinia = createPinia()
 // Create and mount the app
 const app = createApp(App)
 
+// Simple v-intersect directive for IntersectionObserver
+app.directive('intersect', {
+  mounted(el, binding) {
+    const observer = new IntersectionObserver((entries) => {
+      binding.value(entries)
+    })
+    observer.observe(el)
+  }
+})
+
 // Use Pinia
 app.use(pinia)
 app.use(i18n)
