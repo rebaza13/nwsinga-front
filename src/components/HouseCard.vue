@@ -8,6 +8,7 @@
         class="house-card__img"
         loading="lazy"
       />
+      <!-- ive added comment -->
       <div class="house-card__overlay">
         <div class="house-card__features">
           <span class="feature">
