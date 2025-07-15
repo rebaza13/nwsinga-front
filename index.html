@@ -18,7 +18,7 @@
   <body>
     <div id="app">
       <div id="preloader" style="position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.3s;">
-        <img id="preloader-logo" src="/src/assets/for%20white%20theme.png" alt="Loading..." style="max-width:160px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);" />
+        <img id="preloader-logo" src="/for%20white%20theme.png" alt="Loading..." style="max-width:160px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);" />
       </div>
     </div>
     <script>
@@ -28,10 +28,10 @@
       const logo = document.getElementById('preloader-logo');
       if (preloaderTheme === 'dark') {
         preloader.style.background = '#000';
-        logo.src = '/src/assets/for%20black%20theme.jpeg';
+        logo.src = '/for%20black%20theme.jpeg';
       } else {
         preloader.style.background = '#fff';
-        logo.src = '/src/assets/for%20white%20theme.png';
+        logo.src = '/for%20white%20theme.png';
       }
     </script>
     <script type="module" src="/src/main.ts"></script>
