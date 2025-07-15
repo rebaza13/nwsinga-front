@@ -6,9 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vite App</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+      // Detect theme: localStorage > system > default light
+      let detectedTheme = localStorage.getItem('vue-ts-theme');
+      if (!detectedTheme) {
+        detectedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', detectedTheme);
+    </script>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <div id="preloader" style="position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.3s;">
+        <img id="preloader-logo" src="/src/assets/for%20white%20theme.png" alt="Loading..." style="max-width:160px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);" />
+      </div>
+    </div>
+    <script>
+      // Set preloader background and logo based on theme
+      const preloaderTheme = document.documentElement.getAttribute('data-theme');
+      const preloader = document.getElementById('preloader');
+      const logo = document.getElementById('preloader-logo');
+      if (preloaderTheme === 'dark') {
+        preloader.style.background = '#000';
+        logo.src = '/src/assets/for%20black%20theme.jpeg';
+      } else {
+        preloader.style.background = '#fff';
+        logo.src = '/src/assets/for%20white%20theme.png';
+      }
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
