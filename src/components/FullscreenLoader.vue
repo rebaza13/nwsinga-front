@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="fullscreen-loader">
+  <div v-if="visible" :class="['fullscreen-loader', themeStore.isDark ? 'theme-dark' : 'theme-light']">
     <div class="loader-content">
       <!-- Logo -->
       <div class="loader-logo">
@@ -333,5 +333,26 @@ const logoUrl = computed(() => {
   .progress-fill {
     animation: none;
   }
+}
+
+.theme-dark.fullscreen-loader {
+  background: #181818;
+}
+.theme-light.fullscreen-loader {
+  background: #fff;
+}
+.theme-dark .loader-title,
+.theme-dark .progress-text {
+  color: #fff;
+}
+.theme-light .loader-title,
+.theme-light .progress-text {
+  color: #222;
+}
+.theme-dark .loader-subtitle {
+  color: #aaa;
+}
+.theme-light .loader-subtitle {
+  color: #666;
 }
 </style> 

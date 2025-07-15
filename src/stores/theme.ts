@@ -12,7 +12,7 @@ export type Theme = 'light' | 'dark'
  */
 export const useThemeStore = defineStore('theme', () => {
   // State: Current theme (reactive reference)
-  const currentTheme = ref<Theme>('dark') // Default to dark theme
+  const currentTheme = ref<Theme>('light') // Default to light theme
 
   // Computed: Check if current theme is dark
   const isDark = computed(() => currentTheme.value === 'dark')
@@ -26,6 +26,7 @@ export const useThemeStore = defineStore('theme', () => {
   const toggleTheme = () => {
     currentTheme.value = currentTheme.value === 'dark' ? 'light' : 'dark'
     applyThemeToDocument()
+    saveTheme()
   }
 
   /**
@@ -35,6 +36,7 @@ export const useThemeStore = defineStore('theme', () => {
   const setTheme = (theme: Theme) => {
     currentTheme.value = theme
     applyThemeToDocument()
+    saveTheme()
   }
 
   /**
