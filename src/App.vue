@@ -699,6 +699,16 @@ function scrollToHousesAndOpenFirst() {
   .filters {
     display: none !important;
   }
+  .hero-section, .hero-text {
+    text-align: center;
+  }
+  .hero-btn {
+    display: block;
+    margin: 0.7rem auto 0 auto;
+  }
+  .hero-image, .hero-image-wrapper {
+    margin: 0 auto;
+  }
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
