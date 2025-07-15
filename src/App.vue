@@ -13,6 +13,10 @@ import type { Ref } from 'vue'
 import { Icon } from '@iconify/vue';
 
 const heroImg = new URL('./assets/img1.jpg', import.meta.url).href
+const heroImageLoading = ref(true)
+function onHeroImageLoad() {
+  heroImageLoading.value = false
+}
 
 const { t, locale } = useI18n()
 const languages = [
@@ -319,7 +323,8 @@ function scrollToHousesAndOpenFirst() {
                 <button class="hero-btn" @click="scrollToHousesAndOpenFirst">{{ t('hero.cta') }}</button>
               </div>
               <div class="hero-image">
-                <img :src="heroImg" alt="Hero" />
+                <div v-if="heroImageLoading" class="hero-image-skeleton"></div>
+                <img v-show="!heroImageLoading" :src="heroImg" alt="Hero" @load="onHeroImageLoad" />
               </div>
             </div>
           </div>
@@ -863,5 +868,28 @@ function scrollToHousesAndOpenFirst() {
     opacity: 1;
     transform: translateY(0);
   }
+}
+/* Hero Image Skeleton */
+.hero-image-skeleton {
+  width: 100%;
+  height: 320px;
+  background: linear-gradient(90deg, var(--secondary-bg) 25%, var(--border-color) 50%, var(--secondary-bg) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 16px;
+}
+@media (max-width: 768px) {
+  .hero-image-skeleton {
+    height: 200px;
+  }
+}
+@media (max-width: 480px) {
+  .hero-image-skeleton {
+    height: 140px;
+  }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 </style>
