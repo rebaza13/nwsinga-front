@@ -323,8 +323,10 @@ function scrollToHousesAndOpenFirst() {
                 <button class="hero-btn" @click="scrollToHousesAndOpenFirst">{{ t('hero.cta') }}</button>
               </div>
               <div class="hero-image">
-                <div v-if="heroImageLoading" class="hero-image-skeleton"></div>
-                <img v-show="!heroImageLoading" :src="heroImg" alt="Hero" @load="onHeroImageLoad" />
+                <div class="hero-image-wrapper">
+                  <img :src="heroImg" alt="Hero" @load="onHeroImageLoad" :class="{ 'is-loading': heroImageLoading }" />
+                  <div v-if="heroImageLoading" class="hero-image-skeleton"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -823,36 +825,57 @@ function scrollToHousesAndOpenFirst() {
   transform: translateY(-2px) scale(1.03);
 }
 .hero-image {
-  flex: 1 1 350px;
+  /* Ensure the image container doesn't collapse */
+  min-height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.hero-image img {
-  max-width: 420px;
+.hero-image-wrapper {
+  position: relative;
   width: 100%;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-image-wrapper img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  border-radius: 16px;
   display: block;
-  background: #eee;
 }
-.rtl-hero {
-  flex-direction: row-reverse;
+.hero-image-wrapper img.is-loading {
+  visibility: hidden;
 }
-@media (max-width: 900px) {
-  .hero-content {
-    flex-direction: column;
-    gap: 2rem;
-    text-align: center;
+.hero-image-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--secondary-bg) 25%, var(--border-color) 50%, var(--secondary-bg) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 16px;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  .hero-image, .hero-image-wrapper {
+    min-height: 200px;
+    height: 200px;
   }
-  .hero-image img {
-    max-width: 100%;
-    height: auto;
+}
+@media (max-width: 480px) {
+  .hero-image, .hero-image-wrapper {
+    min-height: 140px;
+    height: 140px;
   }
-  .hero-text {
-    max-width: 100%;
-  }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 /* Animations */
@@ -868,28 +891,5 @@ function scrollToHousesAndOpenFirst() {
     opacity: 1;
     transform: translateY(0);
   }
-}
-/* Hero Image Skeleton */
-.hero-image-skeleton {
-  width: 100%;
-  height: 320px;
-  background: linear-gradient(90deg, var(--secondary-bg) 25%, var(--border-color) 50%, var(--secondary-bg) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 16px;
-}
-@media (max-width: 768px) {
-  .hero-image-skeleton {
-    height: 200px;
-  }
-}
-@media (max-width: 480px) {
-  .hero-image-skeleton {
-    height: 140px;
-  }
-}
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
 }
 </style>
