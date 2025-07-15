@@ -798,7 +798,7 @@ function scrollToHousesAndOpenFirst() {
 }
 
 .hero-section {
-  background: linear-gradient(120deg, var(--primary-bg) 60%, var(--secondary-bg) 100%);
+  background: var(--primary-bg);
   padding: 3rem 0 2rem 0;
   margin-top: 2rem;
 }
