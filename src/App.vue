@@ -260,6 +260,10 @@ onMounted(() => {
   initializePage()
   // Initial paginated fetch
   fetchHouses(0, pageSize - 1)
+  // Preload hero image as soon as possible
+  const img = new window.Image()
+  img.src = heroImg
+  img.onload = onHeroImageLoad
 })
 
 const housesSectionRef = ref<HTMLElement | null>(null)
@@ -432,6 +436,15 @@ function scrollToHousesAndOpenFirst() {
         @navigate="navigateModal"
       />
     </div>
+    <!-- Hidden Hero Section for Preloading (keeps skeleton/image loading while loader is visible) -->
+    <section v-if="initialLoading" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;">
+      <div class="hero-image">
+        <div class="hero-image-wrapper">
+          <img :src="heroImg" alt="Hero" @load="onHeroImageLoad" :class="{ 'is-loading': heroImageLoading }" />
+          <div v-if="heroImageLoading" class="hero-image-skeleton"></div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
