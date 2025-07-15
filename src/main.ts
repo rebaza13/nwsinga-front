@@ -26,10 +26,10 @@ app.use(pinia)
 app.use(i18n)
 
 app.mount('#app')
-
 // Remove preloader after app mounts
 const preloader = document.getElementById('preloader')
 if (preloader) {
   preloader.style.opacity = '0'
   setTimeout(() => preloader.remove(), 300)
 }
+
