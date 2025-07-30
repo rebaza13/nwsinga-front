@@ -575,6 +575,7 @@ function scrollToHousesAndOpenFirst() {
  */
 .houses {
   padding: 3rem 0;
+
 }
 
 .houses__header {
@@ -610,6 +611,7 @@ function scrollToHousesAndOpenFirst() {
 }
 
 .houses__grid {
+
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;

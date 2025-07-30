@@ -8,7 +8,7 @@
         class="house-card__img"
         loading="lazy"
       />
-      <!-- ive added commendddt -->
+      <!-- House features overlay -->
       <div class="house-card__overlay">
         <div class="house-card__features">
           <span class="feature">
@@ -48,7 +48,7 @@
         </div>
         <div class="detail">
           <span class="detail__label">Price:</span>
-          <span class="detail__value">${{ house.price }}</span>
+          <span class="detail__value">{{ formatPrice(house.price) }}</span>
         </div>
       </div>
       
@@ -64,6 +64,7 @@
 import type { HouseCardProps } from '../types/house'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
+import { formatPrice } from '../utils/formatters'
 
 /**
  * House Card Component
@@ -282,6 +283,7 @@ function onIntersect(entries: IntersectionObserverEntry[]) {
   }
   
   .house-card__content {
+
     padding: 1rem;
   }
   

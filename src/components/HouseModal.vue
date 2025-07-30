@@ -25,7 +25,7 @@
               </div> -->
               <div class="modal-info-item" v-if="house.price">
                 <span class="modal-icon">💲</span>
-                <span>{{ t('modal.price') }} ${{ house.price }}</span>
+                <span>{{ t('modal.price') }} {{ formatNumber(house.price) }}</span>
               </div>
             </div>
             <p class="modal-desc">{{ house.description }}</p>
@@ -80,7 +80,8 @@
 <script setup lang="ts">
 import type { HouseModalProps } from '../types/house'
 import { useI18n } from 'vue-i18n'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
+import { formatNumber } from '@/utils/formatters';
 
 /**
  * House Modal Component
@@ -109,6 +110,22 @@ const images = computed(() => {
 
 watch(() => props.house, () => { mainImageIndex.value = 0 })
 
+// Scroll lock functionality
+watch(() => props.visible, (isVisible) => {
+  if (isVisible) {
+    // Prevent body scroll when modal opens
+    document.body.style.overflow = 'hidden'
+  } else {
+    // Restore body scroll when modal closes
+    document.body.style.overflow = ''
+  }
+})
+
+// Cleanup on unmount
+onUnmounted(() => {
+  document.body.style.overflow = ''
+})
+
 function setMainImage(idx: number) { mainImageIndex.value = idx }
 function nextImage() { if (mainImageIndex.value < images.value.length - 1) mainImageIndex.value++ }
 function prevImage() { if (mainImageIndex.value > 0) mainImageIndex.value-- }
@@ -117,6 +134,8 @@ function prevImage() { if (mainImageIndex.value > 0) mainImageIndex.value-- }
  * Close the modal
  */
 function closeModal() {
+  // Restore body scroll before closing
+  document.body.style.overflow = ''
   emit('close')
 }
 
@@ -226,17 +245,23 @@ function prevHouse() {
 
 .modal-info {
   display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .modal-info-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   font-size: 1.1rem;
   color: var(--primary-text);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-info-item:last-child {
+  border-bottom: none;
 }
 
 .modal-icon {
@@ -397,7 +422,7 @@ function prevHouse() {
   }
   
   .modal-info {
-    gap: 1rem;
+    gap: 0.75rem;
   }
   
   .modal-info-item {
