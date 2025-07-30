@@ -75,6 +75,12 @@ const logoUrl = computed(() => {
   justify-content: center;
   z-index: 10000;
   animation: fadeIn 0.5s ease-out;
+  /* Ensure proper display in both LTR and RTL */
+  direction: ltr;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 @keyframes fadeIn {
@@ -335,6 +341,29 @@ const logoUrl = computed(() => {
   }
 }
 
+/**
+ * RTL Support
+ * Ensure loader displays properly in both LTR and RTL languages
+ */
+[dir="rtl"] .fullscreen-loader {
+  direction: ltr; /* Keep loader content LTR for consistent display */
+}
+
+[dir="rtl"] .loader-content {
+  direction: ltr; /* Ensure content layout remains consistent */
+}
+
+/* Force proper positioning in RTL */
+html[dir="rtl"] .fullscreen-loader {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
 .theme-dark.fullscreen-loader {
   background: #181818;
 }
@@ -355,4 +384,4 @@ const logoUrl = computed(() => {
 .theme-light .loader-subtitle {
   color: #666;
 }
-</style> 
+</style>
